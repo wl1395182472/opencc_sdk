@@ -1,4 +1,4 @@
-package com.example.opencc_sdk_example
+package com.alex.opencc_sdk_example
 
 import io.flutter.embedding.android.FlutterActivity
 

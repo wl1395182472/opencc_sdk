@@ -162,9 +162,11 @@ packages:
   opencc_sdk:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "0ffc216261fe56357e518c773ed5ba15e412c5fe"
+      url: "https://github.com/wl1395182472/opencc_sdk.git"
+    source: git
     version: "0.0.1"
   path:
     dependency: transitive

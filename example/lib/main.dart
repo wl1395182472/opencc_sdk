@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -30,7 +31,9 @@ class _MyAppState extends State<MyApp> {
       platformVersion =
           await OpenccSdk.convertToTraditional(simplifiedText: platformVersion);
     } catch (error) {
-      print(error);
+      if (kDebugMode) {
+        print(error);
+      }
     }
 
     if (!mounted) return;

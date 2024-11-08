@@ -13,12 +13,22 @@ class MethodChannelOpenccSdk extends OpenccSdkPlatform {
   Future<String> convertToTraditional({
     required String simplifiedText,
   }) async {
-    final data = await methodChannel.invokeMethod<String>(
-      'convertToTraditional',
-      {
-        'simplified_text': simplifiedText,
-      },
-    );
-    return data ?? simplifiedText;
+    String result = simplifiedText;
+    try {
+      final traditionalText = await methodChannel.invokeMethod<String>(
+        'convertToTraditional',
+        {
+          'simplified_text': simplifiedText,
+        },
+      );
+      if (traditionalText != null && traditionalText.isNotEmpty) {
+        simplifiedText = traditionalText;
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('[OpenccSdk] convertToTraditional\n$error');
+      }
+    }
+    return result;
   }
 }

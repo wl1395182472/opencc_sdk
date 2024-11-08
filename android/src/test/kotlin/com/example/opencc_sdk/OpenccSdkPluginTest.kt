@@ -1,4 +1,4 @@
-package com.example.opencc_sdk
+package com.alex.opencc_sdk
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
