@@ -10,46 +10,43 @@ public class OpenccSdkPlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        switch call.method {
-        case "convertToTraditional":
+        if call.method == "convertToTraditional" {
             guard let bundle = self.bundle else {
-                result(createFlutterError(code: "NO_BUNDLE", message: "The bundle for the plugin does not exist."))
+                let flutterError = FlutterError(  code: "NO_BUNDLE", message: "The bundle for the plugin does not exist.", details: nil)
+                result(flutterError)
                 return
             }
             guard let args = call.arguments as? [String: Any],
-                  let text = args["simplified_text"] as? String else {
-                result(createFlutterError(code: "MISSING_PARAMETER", message: "Required parameters are missing."))
+                  let text = args["simplified_text"] as? String
+            else {
+                let flutterError = FlutterError(  code: "MISSING_PARAMETER", message: "Required parameters are missing",  details: nil)
+                result(flutterError)
                 return
             }
-            convertToTraditional(text: text, bundle: bundle, result: result)
-            
-        default:
+            convertToTraditional( text: text,bundle: bundle,  result: result)
+        } else {
             result(FlutterMethodNotImplemented)
         }
     }
     
-    // Lazy-loaded bundle for OpenCC resources
     lazy var bundle: Bundle? = {
         let openCCBundle = Bundle(for: ChineseConverter.self)
-        guard let resourceUrl = openCCBundle.url(forResource: "OpenCCDictionary", withExtension: "bundle") else {
+        guard
+            let resourceUrl = openCCBundle.url(    forResource: "OpenCCDictionary", withExtension: "bundle")
+        else {
             return nil
         }
         return Bundle(url: resourceUrl)
     }()
     
-    // Conversion function with error handling
-    func convertToTraditional(text: String, bundle: Bundle, result: @escaping FlutterResult) {
+    func convertToTraditional( text: String,  bundle: Bundle, result: @escaping FlutterResult) {
         do {
-            let converter = try ChineseConverter(bundle: bundle, option: [.traditionalize])
+            let converter = try ChineseConverter(bundle: bundle,option: [.traditionalize])
             let converted = converter.convert(text)
             result(converted)
         } catch {
-            result(createFlutterError(code: "CONVERSION_ERROR", message: "Failed to convert text to traditional Chinese.", details: error.localizedDescription))
+            let flutterError = FlutterError(   code: "convertToTraditional", message: error.localizedDescription, details: nil)
+            result(flutterError)
         }
-    }
-    
-    // Helper function to create FlutterError
-    private func createFlutterError(code: String, message: String, details: String? = nil) -> FlutterError {
-        return FlutterError(code: code, message: message, details: details)
     }
 }
