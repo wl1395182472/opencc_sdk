@@ -22,7 +22,7 @@ class MethodChannelOpenccSdk extends OpenccSdkPlatform {
         },
       );
       if (traditionalText != null && traditionalText.isNotEmpty) {
-        simplifiedText = traditionalText;
+        result = traditionalText;
       }
     } catch (error) {
       if (kDebugMode) {
